@@ -1,57 +1,49 @@
-import React from 'react'
-import '@testing-library/jest-dom'
-import { screen, render } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import Blog from './Blog'
-import Comment from './Comment'
-import { Provider } from 'react-redux'
-import createTestStore from '../createTestStore'
+import React from "react";
+import "@testing-library/jest-dom";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import Blog from "./Blog";
+import { renderWithProviders } from "../utils/for-tests";
+import Comment from "./Comment";
 
+test("renders blog", () => {
+  const initialBlog = [
+    {
+      id: "1",
+      title: "Monday",
+      author: "poppy",
+      url: "www.flower.com",
+      likes: "2",
+    },
+  ];
 
-let store
+  jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: () => ({
+      id: '1',
+    }),
+  }))
+  
+  const { getByText } = renderWithProviders(<Blog />, {
+    preloadedState: {
+      blogs: initialBlog
+    }
+  });
+  const title = getByText("Monday");
+  const author = getByText("poppy");
+  expect(title).toBeInTheDocument();
+  expect(author).toBeVisible();
+});
 
-describe('Blog', () => {
+test("add comment by clicking button", () => {
+ 
+  const { getByText, getByTestId } = renderWithProviders(<Comment />);
+  const input = getByText("More");
+  const comment = getByTestId("comment");
+  const button = getByText("add comments");
 
-  beforeEach(() => {
-    store = createTestStore()
-  })
+  userEvent.type(input, "Hello");
+  userEvent.click(button);
 
-
-  test('renders blog title, author, url and likes', async () => {
-
-
-
-    render(
-      <Provider store={store}>
-        <Blog />
-      </Provider>
-    )
-
-    expect(screen.getByTestId('title')).toHaveTextContent('Test 1')
-    expect(screen.getByTestId('author')).toHaveTextContent('Testing')
-    expect(screen.getByText('2')).toBeVisible()
-    expect(screen.getByText('www.testing.com')).toBeVisible()
-  })
-
-
-  test('render content after input added by clicking button', () => {
-   
-
-    render(
-      <Provider store={store}>
-        <Comment />
-      </Provider>
-    )
-
-    const input = screen.getByTestId('input')
-    const button = screen.getByTestId('commentBtn')
-
-    userEvent.type(input, 'Hello')
-    userEvent.click(button)
-
-    expect(screen.getByText('Hello')).toBeVisible()
-  })
-
-})
-
-
+  expect(comment).toHaveValue("Hello");
+});

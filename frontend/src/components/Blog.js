@@ -29,8 +29,14 @@ const Blog = () => {
   const blog = blogs.find(b => b.id === id)
   console.log(blog)
   console.log(loginUser)
-  if (!blog && !loginUser) {
+  if (!blog) {
     return null
+  }
+  if (!loginUser) {
+    dispatch(notify('Log in first'))
+    setTimeout(function(){
+      dispatch(stopNotify())
+    }, 10000)
   }
 
   const addLikes = async(event) => {
@@ -77,7 +83,7 @@ const Blog = () => {
       <br/>
       <p>url: <a href={`${blog.url}`}>{blog.url}</a></p>
       <p className='likes'>
-        {blog.likes} <Button variant='outline-info' size='sm' id='like' onClick={addLikes}>like</Button>
+        <span data-testid='likes'>{blog.likes}</span><Button variant='outline-info' size='sm' id='like' data-testid='likeBtn' onClick={addLikes}>like</Button>
       </p>
       <p data-testid='author'>added by {blog.author}</p>
       <br/>
