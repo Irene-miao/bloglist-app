@@ -1,1 +1,0 @@
-mongoUrl="mongodb+srv://fullstack:yaomima@cluster0.my5yk.mongodb.net/blogs-app?retryWrites=true&w=majority"
