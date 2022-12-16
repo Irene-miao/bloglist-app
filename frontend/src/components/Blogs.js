@@ -5,7 +5,7 @@ import Togglable from '../components/Togglable'
 import BlogForm from '../components/BlogForm'
 import { createBlog } from '../reducers/blogReducer'
 import { notify, stopNotify } from '../reducers/notificationReducer'
-import blogService from '../services/blogs'
+import { create } from '../services/blogs'
 
 
 
@@ -27,7 +27,7 @@ const Blogs = () => {
     console.log(blogObject)
     try {
       blogFormRef.current.toggleVisibility()
-      const blog = await blogService.create(user.token,blogObject)
+      const blog = await create(user.token,blogObject)
       console.log(blog)
       dispatch(createBlog(blog))
       dispatch(notify( `a new blog ${blog.title} by ${blog.author} added`, 5))

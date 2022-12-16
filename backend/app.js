@@ -19,7 +19,7 @@ const mongoose = require('mongoose')
 
 logger.info('connecting to', config.url)
 
-mongoose.connect(config.url,  { useNewUrlParser: true })
+mongoose.connect(config.url,  { useNewUrlParser: true , useUnifiedTopology: true })
 .then(() => {
     logger.info('connected to MongoDB')
 })
@@ -34,13 +34,13 @@ app.use(helmet())
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
-app.use('/api/login', loginRouter)
-app.use('/api/users', usersRouter)
-app.use('/api/blogs', blogsRouter )
-app.use('/api/blogs', commentsRouter)
+app.use('/login', loginRouter)
+app.use('/users', usersRouter)
+app.use('/blogs', blogsRouter )
+app.use('/blogs', commentsRouter)
 if (process.env.NODE_ENV === 'test') {
     const testingRouter = require('./controllers/testing')
-    app.use('/api/testing', testingRouter)
+    app.use('/testing', testingRouter)
 }
 
 app.use(middleware.unknownEndpoint)

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import blogService from '../services/blogs'
+import { getAll } from '../services/blogs'
 
 
 // Define reducer and action creators via 'createSlice'
@@ -47,7 +47,7 @@ export const { createBlog, initBlogs, updateBlog, deleteBlog } = blogSlice.actio
 
 // Define thunks that dispatch those action creators
 export const fetchBlogs = () => async (dispatch) => {
-  const blogs = await blogService.getAll()
+  const blogs = await getAll()
   console.log(blogs)
   dispatch(initBlogs(blogs))
 }

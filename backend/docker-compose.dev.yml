@@ -5,7 +5,7 @@ services:
     image: backend
     build:
       context: .
-      dockerfile: prod.Dockerfile
+      dockerfile: dev.Dockerfile
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
@@ -20,4 +20,3 @@ services:
 secrets:
   database:
     file: database.txt
- 

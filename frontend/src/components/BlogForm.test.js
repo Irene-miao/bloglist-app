@@ -25,13 +25,13 @@ describe('BlogForm', () => {
     const button = screen.getByTestId('create')
 
     userEvent.type(inputTitle, { target: { value:'Blog Title' },
-  })
+    })
     userEvent.type(inputLikes, { target: { value:'2' },
-  })
+    })
     userEvent.type(inputAuthor, { target: { value:'timmy' },
-  })
+    })
     userEvent.type(inputUrl,  { target: { value:'www.testing.com' },
-  })
+    })
     userEvent.click(button)
 
     console.log(handleAdd)

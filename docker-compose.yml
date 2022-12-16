@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  app:
+    image: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app
+    container_name: frontend
+    networks:
+      net:
+        aliases:
+          - frontend
+  server:
+    image: backend
+    build:
+      context: ./backend
+      dockerfile: prod.Dockerfile
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      net:
+        aliases:
+          - backend
+    secrets:
+      - database
+    container_name: backend
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:81
+    networks:
+      net:
+        aliases:
+          - reverse-proxy
+    container_name: reverse-proxy
+    depends_on:
+      - app
+      - server
+secrets:
+  database:
+    file: ./backend/database.txt
+networks:
+  net:
+    driver: bridge

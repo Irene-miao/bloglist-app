@@ -5,7 +5,7 @@ import { notify, stopNotify } from '../reducers/notificationReducer'
 import { useParams } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { fetchComments } from '../reducers/commentReducer'
-import blogService from '../services/blogs'
+import { update } from '../services/blogs'
 import Comment from './Comment'
 
 
@@ -57,7 +57,7 @@ const Blog = () => {
         url: blog.url,
         likes: blog.likes,
       }
-      const updatedBlog = await blogService.update(blogToChange)
+      const updatedBlog = await update(blogToChange)
       dispatch(updateBlog(updatedBlog))
       dispatch(notify( `Updated the blog ${updatedBlog.title} by ${updatedBlog.author} added`, 5))
       setTimeout(function(){
